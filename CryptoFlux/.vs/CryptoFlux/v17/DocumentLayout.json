@@ -1,0 +1,137 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|c:\\users\\luis luque\\onedrive\\escritorio\\cryptoflux-entrega\\cryptoflux\\cryptoflux.api\\services\\transaccionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|solutionrelative:cryptoflux.api\\services\\transaccionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|c:\\users\\luis luque\\onedrive\\escritorio\\cryptoflux-entrega\\cryptoflux\\cryptoflux.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|solutionrelative:cryptoflux.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|c:\\users\\luis luque\\onedrive\\escritorio\\cryptoflux-entrega\\cryptoflux\\cryptoflux.api\\controllers\\transaccionescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|solutionrelative:cryptoflux.api\\controllers\\transaccionescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|c:\\users\\luis luque\\onedrive\\escritorio\\cryptoflux-entrega\\cryptoflux\\cryptoflux.api\\dtos\\transaccionresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|solutionrelative:cryptoflux.api\\dtos\\transaccionresponsedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|c:\\users\\luis luque\\onedrive\\escritorio\\cryptoflux-entrega\\cryptoflux\\cryptoflux.api\\dtos\\transaccionrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|solutionrelative:cryptoflux.api\\dtos\\transaccionrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|c:\\users\\luis luque\\onedrive\\escritorio\\cryptoflux-entrega\\cryptoflux\\cryptoflux.api\\interfaces\\itransaccionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|solutionrelative:cryptoflux.api\\interfaces\\itransaccionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|c:\\users\\luis luque\\onedrive\\escritorio\\cryptoflux-entrega\\cryptoflux\\cryptoflux.api\\models\\transaccion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{258997B4-54A8-4A31-883F-C72C455CBF64}|CryptoFlux.API\\CryptoFlux.API.csproj|solutionrelative:cryptoflux.api\\models\\transaccion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TransaccionResponseDto.cs",
+              "DocumentMoniker": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\DTOs\\TransaccionResponseDto.cs",
+              "RelativeDocumentMoniker": "CryptoFlux.API\\DTOs\\TransaccionResponseDto.cs",
+              "ToolTip": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\DTOs\\TransaccionResponseDto.cs",
+              "RelativeToolTip": "CryptoFlux.API\\DTOs\\TransaccionResponseDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-09T00:04:49.247Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "TransaccionRequestDto.cs",
+              "DocumentMoniker": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\DTOs\\TransaccionRequestDto.cs",
+              "RelativeDocumentMoniker": "CryptoFlux.API\\DTOs\\TransaccionRequestDto.cs",
+              "ToolTip": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\DTOs\\TransaccionRequestDto.cs",
+              "RelativeToolTip": "CryptoFlux.API\\DTOs\\TransaccionRequestDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-09T00:04:44.964Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ITransaccionService.cs",
+              "DocumentMoniker": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\Interfaces\\ITransaccionService.cs",
+              "RelativeDocumentMoniker": "CryptoFlux.API\\Interfaces\\ITransaccionService.cs",
+              "ToolTip": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\Interfaces\\ITransaccionService.cs",
+              "RelativeToolTip": "CryptoFlux.API\\Interfaces\\ITransaccionService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-09T00:04:25.928Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TransaccionService.cs",
+              "DocumentMoniker": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\Services\\TransaccionService.cs",
+              "RelativeDocumentMoniker": "CryptoFlux.API\\Services\\TransaccionService.cs",
+              "ToolTip": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\Services\\TransaccionService.cs",
+              "RelativeToolTip": "CryptoFlux.API\\Services\\TransaccionService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-08T23:27:10.592Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Transaccion.cs",
+              "DocumentMoniker": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\Models\\Transaccion.cs",
+              "RelativeDocumentMoniker": "CryptoFlux.API\\Models\\Transaccion.cs",
+              "ToolTip": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\Models\\Transaccion.cs",
+              "RelativeToolTip": "CryptoFlux.API\\Models\\Transaccion.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-09T00:04:15.328Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\Program.cs",
+              "RelativeDocumentMoniker": "CryptoFlux.API\\Program.cs",
+              "ToolTip": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\Program.cs",
+              "RelativeToolTip": "CryptoFlux.API\\Program.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-08T23:58:09.298Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TransaccionesController.cs",
+              "DocumentMoniker": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\Controllers\\TransaccionesController.cs",
+              "RelativeDocumentMoniker": "CryptoFlux.API\\Controllers\\TransaccionesController.cs",
+              "ToolTip": "C:\\Users\\Luis Luque\\OneDrive\\Escritorio\\CryptoFlux-Entrega\\CryptoFlux\\CryptoFlux.API\\Controllers\\TransaccionesController.cs",
+              "RelativeToolTip": "CryptoFlux.API\\Controllers\\TransaccionesController.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-09T00:04:55.541Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
