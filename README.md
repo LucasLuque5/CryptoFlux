@@ -15,7 +15,7 @@ Cómo correr el proyecto
 Backend
 1. Abrí la solución `CryptoFlux/CryptoFlux.API` en Visual Studio 2022
 2. Ejecutá el proyecto con F5
-3. Swagger disponible en: `https://localhost:7212/swagger`
+3. Swagger disponible en: `https://localhost:7212/swagger` (el puerto puede cambiar, verificarlo en Properties/launchSettings.json)
 
 Frontend
 1. Abrí la carpeta `crypto-flux` en VS Code
