@@ -9,10 +9,12 @@ namespace CryptoFlux.API.Services;
 public class TransaccionService : ITransaccionService
 {
     private readonly AppDbContext _context;
+    private readonly ICryptoPriceService _priceService;
 
-    public TransaccionService(AppDbContext context)
+    public TransaccionService(AppDbContext context, ICryptoPriceService priceService)
     {
         _context = context;
+        _priceService = priceService;
     }
 
     public async Task<IEnumerable<TransaccionResponseDto>> GetAllAsync()
@@ -49,13 +51,37 @@ public class TransaccionService : ITransaccionService
 
     public async Task<TransaccionResponseDto> CreateAsync(TransaccionRequestDto dto)
     {
+        decimal moneyCalculado = dto.Money;
+
+        if (dto.Action.ToLower() == "compra")
+        {
+            var precio = await _priceService.GetPriceAsync(dto.CryptoCode, "ARS", dto.CryptoAmount);
+            if (precio == null)
+                throw new InvalidOperationException("No se pudo obtener la cotizacion de la criptomoneda.");
+
+            moneyCalculado = dto.CryptoAmount * precio.Value;
+        }
+
+        if (dto.Action.ToLower() == "venta")
+        {
+            var saldo = await ObtenerSaldoAsync(dto.CryptoCode);
+            if (dto.CryptoAmount > saldo)
+                throw new InvalidOperationException(
+                    $"Saldo insuficiente. Tenes {saldo} {dto.CryptoCode.ToUpper()} y queres vender {dto.CryptoAmount}.");
+
+            var precio = await _priceService.GetPriceAsync(dto.CryptoCode, "ARS", dto.CryptoAmount);
+            if (precio == null)
+                throw new InvalidOperationException("No se pudo obtener la cotizacion de la criptomoneda.");
+
+            moneyCalculado = dto.CryptoAmount * precio.Value;
+        }
 
         var transaccion = new Transaccion
         {
             CryptoCode = dto.CryptoCode,
             Action = dto.Action,
             CryptoAmount = dto.CryptoAmount,
-            Money = dto.Money,
+            Money = moneyCalculado,
             DateTime = dto.DateTime
         };
 
@@ -98,4 +124,21 @@ public class TransaccionService : ITransaccionService
         return true;
     }
 
+    private async Task<decimal> ObtenerSaldoAsync(string cryptoCode)
+    {
+        var transacciones = await _context.Transacciones
+            .Where(t => t.CryptoCode.ToLower() == cryptoCode.ToLower())
+            .ToListAsync();
+
+        decimal saldo = 0;
+        foreach (var t in transacciones)
+        {
+            if (t.Action.ToLower() == "compra")
+                saldo += t.CryptoAmount;
+            else if (t.Action.ToLower() == "venta")
+                saldo -= t.CryptoAmount;
+        }
+
+        return saldo;
+    }
 }

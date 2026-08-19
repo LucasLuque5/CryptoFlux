@@ -30,4 +30,10 @@ export const transaccionesApi = {
   
 }
 
+export const carteraApi = {
+  obtener() {
+    return apiClient.get('/cartera')
+  }
+}
+
 
