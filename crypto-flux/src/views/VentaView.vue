@@ -16,17 +16,17 @@ async function enviarFormulario() {
   try {
     await transaccionesApi.create({
       cryptoCode: form.cripto,
-      action: 'compra',
+      action: 'venta',
       cryptoAmount: form.cantidad,
       money: 0,
       dateTime: new Date(form.fecha).toISOString()
     })
-    alert('Compra registrada correctamente! El monto fue calculado automaticamente.')
+    alert('Venta registrada correctamente!')
     form.cripto = ''
     form.cantidad = null
     form.fecha = ''
   } catch (error) {
-    const msg = error.response?.data?.message || 'Error al registrar la compra.'
+    const msg = error.response?.data?.message || 'Error al registrar la venta.'
     alert(msg)
     console.error(error)
   }
@@ -37,9 +37,9 @@ async function enviarFormulario() {
   <div class="page">
     <div class="card">
       <div class="card-header">
-        <div class="card-icon green">&#128176;</div>
+        <div class="card-icon red">&#128176;</div>
         <div>
-          <h2>Registrar Compra</h2>
+          <h2>Registrar Venta</h2>
           <p class="card-desc">El monto se calcula automaticamente segun el precio actual</p>
         </div>
       </div>
@@ -55,18 +55,17 @@ async function enviarFormulario() {
           </select>
         </div>
 
-        <div class="field-row">
-          <div class="field">
-            <label>Cantidad</label>
-            <input v-model="form.cantidad" type="number" step="0.00000001" placeholder="ej: 0.00070" />
-          </div>
-          <div class="field">
-            <label>Fecha y hora</label>
-            <input v-model="form.fecha" type="datetime-local" />
-          </div>
+        <div class="field">
+          <label>Cantidad</label>
+          <input v-model="form.cantidad" type="number" step="0.00000001" placeholder="ej: 0.00070" />
         </div>
 
-        <button type="submit" class="btn-submit green">Registrar Compra</button>
+        <div class="field">
+          <label>Fecha y hora</label>
+          <input v-model="form.fecha" type="datetime-local" />
+        </div>
+
+        <button type="submit" class="btn-submit red">Registrar Venta</button>
       </form>
     </div>
   </div>
@@ -106,8 +105,8 @@ async function enviarFormulario() {
   flex-shrink: 0;
 }
 
-.card-icon.green {
-  background: rgba(0, 200, 83, 0.1);
+.card-icon.red {
+  background: rgba(248, 81, 73, 0.1);
 }
 
 .card-header h2 {
@@ -159,24 +158,12 @@ select, input {
 
 select:focus, input:focus {
   outline: none;
-  border-color: var(--primary);
+  border-color: var(--danger);
 }
 
 select option {
   background: var(--bg-dark);
   color: var(--text);
-}
-
-.info-box {
-  padding: 0.75rem 1rem;
-  background: rgba(0, 200, 83, 0.05);
-  border: 1px solid rgba(0, 200, 83, 0.2);
-  border-radius: 8px;
-  font-size: 0.85rem;
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .btn-submit {
@@ -191,13 +178,13 @@ select option {
   font-family: inherit;
 }
 
-.btn-submit.green {
-  background: var(--primary);
-  color: var(--bg-dark);
+.btn-submit.red {
+  background: var(--danger);
+  color: white;
 }
 
-.btn-submit.green:hover {
-  background: var(--primary-light);
+.btn-submit.red:hover {
+  background: var(--danger-dark);
   transform: translateY(-1px);
 }
 </style>
