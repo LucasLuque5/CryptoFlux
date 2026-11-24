@@ -47,7 +47,7 @@ public class TransaccionesController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpPatch("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] TransaccionRequestDto dto)
     {
         var resultado = await _service.UpdateAsync(id, dto);

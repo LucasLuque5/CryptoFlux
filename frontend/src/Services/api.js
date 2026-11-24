@@ -25,7 +25,7 @@ export const transaccionesApi = {
   },
 
   update(id, data) {
-  return apiClient.put(`/transacciones/${id}`, data)
+    return apiClient.patch(`/transacciones/${id}`, data)
   },
   
 }
