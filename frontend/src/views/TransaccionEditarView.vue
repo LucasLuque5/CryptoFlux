@@ -23,7 +23,7 @@ onMounted(async () => {
       action: t.action,
       cryptoAmount: t.cryptoAmount,
       money: t.money,
-      dateTime: new Date(t.dateTime).toISOString().slice(0, 16)
+      dateTime: t.dateTime.slice(0, 16)
     }
   } catch (error) {
     alert('Error al cargar la transaccion.')
@@ -32,10 +32,7 @@ onMounted(async () => {
 
 async function guardarCambios() {
   try {
-    await transaccionesApi.update(route.params.id,
-     { id: parseInt(route.params.id), ...form.value,
-        dateTime: new Date(form.value.dateTime).toISOString()
-     })
+    await transaccionesApi.update(route.params.id, form.value)
     alert('Transaccion actualizada correctamente!')
     router.push('/historial')
   } catch (error) {

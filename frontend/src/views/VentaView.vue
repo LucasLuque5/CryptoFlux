@@ -18,8 +18,7 @@ async function enviarFormulario() {
       cryptoCode: form.cripto,
       action: 'sale',
       cryptoAmount: form.cantidad,
-      money: 0,
-      dateTime: new Date(form.fecha).toISOString()
+      dateTime: form.fecha
     })
     alert('Venta registrada correctamente!')
     form.cripto = ''
