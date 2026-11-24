@@ -53,7 +53,7 @@ public class TransaccionService : ITransaccionService
     {
         decimal moneyCalculado = dto.Money;
 
-        if (dto.Action.ToLower() == "compra")
+        if (dto.Action.ToLower() == "purchase")
         {
             var precio = await _priceService.GetPriceAsync(dto.CryptoCode, "ARS", dto.CryptoAmount);
             if (precio == null)
@@ -62,7 +62,7 @@ public class TransaccionService : ITransaccionService
             moneyCalculado = dto.CryptoAmount * precio.Value;
         }
 
-        if (dto.Action.ToLower() == "venta")
+        if (dto.Action.ToLower() == "sale")
         {
             var saldo = await ObtenerSaldoAsync(dto.CryptoCode);
             if (dto.CryptoAmount > saldo)
@@ -133,9 +133,9 @@ public class TransaccionService : ITransaccionService
         decimal saldo = 0;
         foreach (var t in transacciones)
         {
-            if (t.Action.ToLower() == "compra")
+            if (t.Action.ToLower() == "purchase")
                 saldo += t.CryptoAmount;
-            else if (t.Action.ToLower() == "venta")
+            else if (t.Action.ToLower() == "sale")
                 saldo -= t.CryptoAmount;
         }
 

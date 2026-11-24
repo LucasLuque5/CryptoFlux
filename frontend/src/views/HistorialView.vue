@@ -58,9 +58,6 @@ function formatearMoneda(valor) {
   }).format(valor)
 }
 
-function tipoBadge(action) {
-  return action === 'compra' ? 'compra' : 'venta'
-}
 </script>
 
 <template>
@@ -100,7 +97,7 @@ function tipoBadge(action) {
         <tbody>
           <tr v-for="t in transacciones" :key="t.id">
             <td>
-              <span :class="['badge', tipoBadge(t.action)]">{{ t.action }}</span>
+              <span :class="['badge', t.action]">{{ t.action === 'purchase' ? 'Compra' : 'Venta' }}</span>
             </td>
             <td class="crypto-cell">
               <span class="crypto-code">{{ t.cryptoCode.toUpperCase() }}</span>
@@ -268,12 +265,12 @@ tr:hover td {
   text-transform: capitalize;
 }
 
-.badge.compra {
+.badge.purchase {
   background: rgba(0, 200, 83, 0.1);
   color: var(--primary);
 }
 
-.badge.venta {
+.badge.sale {
   background: rgba(248, 81, 73, 0.1);
   color: var(--danger);
 }

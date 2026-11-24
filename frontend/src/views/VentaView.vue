@@ -16,7 +16,7 @@ async function enviarFormulario() {
   try {
     await transaccionesApi.create({
       cryptoCode: form.cripto,
-      action: 'venta',
+      action: 'sale',
       cryptoAmount: form.cantidad,
       money: 0,
       dateTime: new Date(form.fecha).toISOString()

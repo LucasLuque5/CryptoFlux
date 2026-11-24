@@ -28,9 +28,9 @@ public class CarteraService : ICarteraService
             if (!holdings.ContainsKey(code))
                 holdings[code] = 0;
 
-            if (t.Action.ToLower() == "compra")
+            if (t.Action.ToLower() == "purchase")
                 holdings[code] += t.CryptoAmount;
-            else if (t.Action.ToLower() == "venta")
+            else if (t.Action.ToLower() == "sale")
                 holdings[code] -= t.CryptoAmount;
         }
 

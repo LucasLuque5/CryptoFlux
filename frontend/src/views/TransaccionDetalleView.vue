@@ -40,13 +40,13 @@ function formatearMoneda(valor) {
     <div class="card">
       <div v-if="transaccion">
         <div class="card-header">
-          <div :class="['card-icon', transaccion.action === 'compra' ? 'green' : 'red']">
-            {{ transaccion.action === 'compra' ? '&#128176;' : '&#128176;' }}
+          <div :class="['card-icon', transaccion.action === 'purchase' ? 'green' : 'red']">
+            &#128176;
           </div>
           <div>
             <div class="header-row">
               <h2>Detalle de Transaccion</h2>
-              <span :class="['badge', transaccion.action]">{{ transaccion.action }}</span>
+              <span :class="['badge', transaccion.action]">{{ transaccion.action === 'purchase' ? 'Compra' : 'Venta' }}</span>
             </div>
             <p class="card-desc">ID #{{ transaccion.id }}</p>
           </div>
@@ -153,12 +153,12 @@ function formatearMoneda(valor) {
   text-transform: capitalize;
 }
 
-.badge.compra {
+.badge.purchase {
   background: rgba(0, 200, 83, 0.1);
   color: var(--primary);
 }
 
-.badge.venta {
+.badge.sale {
   background: rgba(248, 81, 73, 0.1);
   color: var(--danger);
 }
