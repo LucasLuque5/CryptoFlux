@@ -50,9 +50,16 @@ public class TransaccionesController : ControllerBase
     [HttpPatch("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] TransaccionRequestDto dto)
     {
-        var resultado = await _service.UpdateAsync(id, dto);
-        if (!resultado) return NotFound();
-        return NoContent();
+        try
+        {
+            var resultado = await _service.UpdateAsync(id, dto);
+            if (!resultado) return NotFound();
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpDelete("{id}")]
