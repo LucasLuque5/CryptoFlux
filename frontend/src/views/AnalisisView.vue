@@ -36,14 +36,7 @@ function nombreCripto(codigo) {
   const nombres = {
     BTC: 'Bitcoin',
     ETH: 'Ethereum',
-    USDC: 'USD Coin',
-    USDT: 'Tether',
-    DAI: 'Dai',
-    BNB: 'BNB',
-    SOL: 'Solana',
-    XRP: 'Ripple',
-    ADA: 'Cardano',
-    DOGE: 'Dogecoin'
+    USDC: 'USD Coin'
   }
   return nombres[codigo.toUpperCase()] || codigo
 }
@@ -52,14 +45,7 @@ function colorCripto(codigo) {
   const colores = {
     BTC: '#f7931a',
     ETH: '#627eea',
-    USDC: '#2775ca',
-    USDT: '#26a17b',
-    DAI: '#f5ac37',
-    SOL: '#9945ff',
-    XRP: '#23292f',
-    ADA: '#0033ad',
-    DOGE: '#c2a633',
-    BNB: '#f3ba2f'
+    USDC: '#2775ca'
   }
   return colores[codigo.toUpperCase()] || '#00c853'
 }

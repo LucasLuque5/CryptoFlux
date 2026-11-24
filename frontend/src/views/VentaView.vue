@@ -126,12 +126,6 @@ async function enviarFormulario() {
   gap: 1.25rem;
 }
 
-.field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
 .field {
   display: flex;
   flex-direction: column;

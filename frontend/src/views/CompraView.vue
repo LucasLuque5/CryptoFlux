@@ -166,18 +166,6 @@ select option {
   color: var(--text);
 }
 
-.info-box {
-  padding: 0.75rem 1rem;
-  background: rgba(0, 200, 83, 0.05);
-  border: 1px solid rgba(0, 200, 83, 0.2);
-  border-radius: 8px;
-  font-size: 0.85rem;
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .btn-submit {
   padding: 0.8rem;
   border: none;
