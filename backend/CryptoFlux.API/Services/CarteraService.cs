@@ -42,8 +42,11 @@ public class CarteraService : ICarteraService
             if (holding.Value <= 0)
                 continue;
 
-            var precioUnitario = await _priceService.GetPriceAsync(holding.Key, "ARS", 1);
-            var precio = precioUnitario ?? 0;
+            var cotizacion = await _priceService.GetQuoteAsync(holding.Key);
+            if (cotizacion == null)
+                throw new InvalidOperationException($"No se pudo obtener la cotizacion de {holding.Key}.");
+
+            var precio = cotizacion.TotalBid;
             var valor = holding.Value * precio;
 
             criptomonedas.Add(new CarteraItemDto

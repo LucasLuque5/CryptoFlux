@@ -51,37 +51,26 @@ public class TransaccionService : ITransaccionService
 
     public async Task<TransaccionResponseDto> CreateAsync(TransaccionRequestDto dto)
     {
-        decimal moneyCalculado = dto.Money;
-
-        if (dto.Action.ToLower() == "purchase")
-        {
-            var precio = await _priceService.GetPriceAsync(dto.CryptoCode, "ARS", dto.CryptoAmount);
-            if (precio == null)
-                throw new InvalidOperationException("No se pudo obtener la cotizacion de la criptomoneda.");
-
-            moneyCalculado = dto.CryptoAmount * precio.Value;
-        }
-
-        if (dto.Action.ToLower() == "sale")
+        if (dto.Action == "sale")
         {
             var saldo = await ObtenerSaldoAsync(dto.CryptoCode);
             if (dto.CryptoAmount > saldo)
                 throw new InvalidOperationException(
                     $"Saldo insuficiente. Tenes {saldo} {dto.CryptoCode.ToUpper()} y queres vender {dto.CryptoAmount}.");
-
-            var precio = await _priceService.GetPriceAsync(dto.CryptoCode, "ARS", dto.CryptoAmount);
-            if (precio == null)
-                throw new InvalidOperationException("No se pudo obtener la cotizacion de la criptomoneda.");
-
-            moneyCalculado = dto.CryptoAmount * precio.Value;
         }
+
+        var cotizacion = await _priceService.GetQuoteAsync(dto.CryptoCode);
+        if (cotizacion == null)
+            throw new InvalidOperationException("No se pudo obtener la cotizacion de la criptomoneda.");
+
+        var precio = dto.Action == "purchase" ? cotizacion.TotalAsk : cotizacion.TotalBid;
 
         var transaccion = new Transaccion
         {
             CryptoCode = dto.CryptoCode,
             Action = dto.Action,
             CryptoAmount = dto.CryptoAmount,
-            Money = moneyCalculado,
+            Money = dto.CryptoAmount * precio,
             DateTime = dto.DateTime
         };
 
