@@ -29,15 +29,25 @@ function editar(id) {
   router.push(`/transaccion/${id}/editar`)
 }
 
-async function borrar(id) {
-  if (confirm('Estas seguro que queres borrar esta transaccion?')) {
-    try {
-      await transaccionesApi.delete(id)
-      transacciones.value = transacciones.value.filter(t => t.id !== id)
-    } catch (e) {
-      alert('Error al borrar la transaccion.')
-      console.error(e)
-    }
+const idABorrar = ref(null)
+
+function borrar(id) {
+  idABorrar.value = id
+}
+
+function cancelarBorrado() {
+  idABorrar.value = null
+}
+
+async function confirmarBorrado() {
+  try {
+    await transaccionesApi.delete(idABorrar.value)
+    transacciones.value = transacciones.value.filter(t => t.id !== idABorrar.value)
+  } catch (e) {
+    alert('Error al borrar la transaccion.')
+    console.error(e)
+  } finally {
+    idABorrar.value = null
   }
 }
 
@@ -115,6 +125,17 @@ function formatearMoneda(valor) {
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div v-if="idABorrar" class="modal-fondo">
+      <div class="modal">
+        <h3>Borrar transaccion</h3>
+        <p>Estas seguro que queres borrar la transaccion #{{ idABorrar }}?</p>
+        <div class="modal-acciones">
+          <button class="btn-action" @click="cancelarBorrado">Cancelar</button>
+          <button class="btn-action danger" @click="confirmarBorrado">Borrar</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -308,5 +329,38 @@ tr:hover td {
   background: rgba(248, 81, 73, 0.15);
   border-color: var(--danger);
   color: var(--danger);
+}
+
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 400px;
+  width: 90%;
+}
+
+.modal h3 {
+  margin-bottom: 0.5rem;
+}
+
+.modal p {
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.modal-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 </style>
