@@ -36,7 +36,7 @@ async function guardarCambios() {
     alert('Transaccion actualizada correctamente!')
     router.push('/historial')
   } catch (error) {
-    alert('Error al actualizar la transaccion.')
+    alert(error.response?.data?.message || 'Error al actualizar la transaccion.')
     console.error(error)
   }
 }
@@ -54,6 +54,14 @@ async function guardarCambios() {
       </div>
 
       <form @submit.prevent="guardarCambios" class="form">
+        <div class="field">
+          <label>Tipo</label>
+          <select v-model="form.action">
+            <option value="purchase">Compra</option>
+            <option value="sale">Venta</option>
+          </select>
+        </div>
+
         <div class="field">
           <label>Criptomoneda</label>
           <select v-model="form.cryptoCode">
