@@ -2,10 +2,12 @@
 import { transaccionesApi } from '../Services/api.js'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { formatearFecha, formatearMoneda } from '../utils/formato.js'
 
 const transacciones = ref([])
 const cargando = ref(true)
 const error = ref(null)
+const errorBorrado = ref('')
 
 onMounted(async () => {
   try {
@@ -32,6 +34,7 @@ function editar(id) {
 const idABorrar = ref(null)
 
 function borrar(id) {
+  errorBorrado.value = ''
   idABorrar.value = id
 }
 
@@ -44,30 +47,12 @@ async function confirmarBorrado() {
     await transaccionesApi.delete(idABorrar.value)
     transacciones.value = transacciones.value.filter(t => t.id !== idABorrar.value)
   } catch (e) {
-    alert('Error al borrar la transaccion.')
+    errorBorrado.value = 'Error al borrar la transaccion.'
     console.error(e)
   } finally {
     idABorrar.value = null
   }
 }
-
-function formatearFecha(fecha) {
-  return new Date(fecha).toLocaleString('es-AR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
-}
-
-function formatearMoneda(valor) {
-  return new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS'
-  }).format(valor)
-}
-
 </script>
 
 <template>
@@ -76,6 +61,8 @@ function formatearMoneda(valor) {
       <h2>Historial de Transacciones</h2>
       <RouterLink to="/compra" class="btn-new">+ Nueva</RouterLink>
     </div>
+
+    <p v-if="errorBorrado" class="mensaje error">{{ errorBorrado }}</p>
 
     <div v-if="cargando" class="state">
       <div class="spinner"></div>
@@ -87,7 +74,6 @@ function formatearMoneda(valor) {
     </div>
 
     <div v-else-if="transacciones.length === 0" class="state empty">
-      <div class="empty-icon">&#128203;</div>
       <p>No hay transacciones registradas</p>
       <RouterLink to="/compra" class="btn-link">Registrar primera compra</RouterLink>
     </div>
@@ -146,18 +132,6 @@ function formatearMoneda(valor) {
   margin: 0 auto;
 }
 
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-}
-
-.page-header h2 {
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
 .btn-new {
   padding: 0.5rem 1rem;
   background: var(--primary);
@@ -171,52 +145,6 @@ function formatearMoneda(valor) {
 
 .btn-new:hover {
   background: var(--primary-light);
-}
-
-.state {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  color: var(--text-muted);
-}
-
-.state.error {
-  color: var(--danger);
-  background: rgba(248, 81, 73, 0.05);
-  border-color: rgba(248, 81, 73, 0.2);
-}
-
-.empty-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.btn-link {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background: var(--primary);
-  color: var(--bg-dark);
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--border);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 1rem;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }
 
 .table-wrapper {
@@ -257,43 +185,16 @@ tr:hover td {
   background: var(--bg-card-hover);
 }
 
-.mono {
-  font-family: 'SF Mono', 'Fira Code', monospace;
-}
-
-.muted {
-  color: var(--text-muted);
-}
-
 .crypto-cell {
   font-weight: 600;
 }
 
 .crypto-code {
-  background: rgba(0, 200, 83, 0.1);
+  background: var(--primary-soft);
   color: var(--primary);
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
   font-size: 0.8rem;
-}
-
-.badge {
-  display: inline-block;
-  padding: 0.2rem 0.6rem;
-  border-radius: 100px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-.badge.purchase {
-  background: rgba(0, 200, 83, 0.1);
-  color: var(--primary);
-}
-
-.badge.sale {
-  background: rgba(248, 81, 73, 0.1);
-  color: var(--danger);
 }
 
 .actions-col {
@@ -326,7 +227,7 @@ tr:hover td {
 }
 
 .btn-action.danger:hover {
-  background: rgba(248, 81, 73, 0.15);
+  background: var(--danger-soft);
   border-color: var(--danger);
   color: var(--danger);
 }

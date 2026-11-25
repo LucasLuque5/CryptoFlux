@@ -79,7 +79,7 @@
 
 .nav-link.router-link-active {
   color: var(--primary);
-  background: rgba(0, 200, 83, 0.1);
+  background: var(--primary-soft);
 }
 
 .main-content {

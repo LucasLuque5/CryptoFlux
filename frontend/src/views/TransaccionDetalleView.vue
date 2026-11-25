@@ -2,46 +2,31 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { transaccionesApi } from '../Services/api.js'
+import { formatearFecha, formatearMoneda } from '../utils/formato.js'
 
 const route = useRoute()
 const router = useRouter()
 const transaccion = ref(null)
+const error = ref('')
 
 onMounted(async () => {
   try {
     const response = await transaccionesApi.getById(route.params.id)
     transaccion.value = response.data
-  } catch (error) {
-    alert('Error al cargar la transaccion.')
-    console.error(error)
+  } catch (e) {
+    error.value = 'Error al cargar la transaccion.'
+    console.error(e)
   }
 })
-
-function formatearFecha(fecha) {
-  return new Date(fecha).toLocaleString('es-AR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
-}
-
-function formatearMoneda(valor) {
-  return new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS'
-  }).format(valor)
-}
 </script>
 
 <template>
-  <div class="page">
+  <div class="page-centrada">
     <div class="card">
       <div v-if="transaccion">
         <div class="card-header">
           <div :class="['card-icon', transaccion.action === 'purchase' ? 'green' : 'red']">
-            &#128176;
+            {{ transaccion.action === 'purchase' ? '+' : '−' }}
           </div>
           <div>
             <div class="header-row">
@@ -71,11 +56,13 @@ function formatearMoneda(valor) {
           </div>
         </div>
 
-        <div class="card-actions">
-          <button @click="router.back()" class="btn-back">Volver</button>
-          <RouterLink :to="`/transaccion/${route.params.id}/editar`" class="btn-edit">Editar</RouterLink>
+        <div class="acciones">
+          <button @click="router.back()" class="btn-secundario">Volver</button>
+          <RouterLink :to="`/transaccion/${route.params.id}/editar`" class="btn-primario">Editar</RouterLink>
         </div>
       </div>
+
+      <p v-else-if="error" class="mensaje error">{{ error }}</p>
 
       <div v-else class="state">
         <div class="spinner"></div>
@@ -86,45 +73,14 @@ function formatearMoneda(valor) {
 </template>
 
 <style scoped>
-.page {
-  display: flex;
-  justify-content: center;
-  padding-top: 2rem;
-}
-
-.card {
-  width: 100%;
-  max-width: 520px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 2rem;
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.card-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  flex-shrink: 0;
-}
-
 .card-icon.green {
-  background: rgba(0, 200, 83, 0.1);
+  background: var(--success-soft);
+  color: var(--success);
 }
 
 .card-icon.red {
-  background: rgba(248, 81, 73, 0.1);
+  background: var(--danger-soft);
+  color: var(--danger);
 }
 
 .header-row {
@@ -136,31 +92,6 @@ function formatearMoneda(valor) {
 .header-row h2 {
   font-size: 1.3rem;
   font-weight: 600;
-  margin: 0;
-}
-
-.card-desc {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin: 0.2rem 0 0 0;
-}
-
-.badge {
-  padding: 0.2rem 0.6rem;
-  border-radius: 100px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-.badge.purchase {
-  background: rgba(0, 200, 83, 0.1);
-  color: var(--primary);
-}
-
-.badge.sale {
-  background: rgba(248, 81, 73, 0.1);
-  color: var(--danger);
 }
 
 .detail-grid {
@@ -189,67 +120,5 @@ function formatearMoneda(valor) {
 
 .detail-value.crypto {
   color: var(--primary);
-}
-
-.detail-value.mono {
-  font-family: 'SF Mono', 'Fira Code', monospace;
-}
-
-.card-actions {
-  display: flex;
-  gap: 0.75rem;
-}
-
-.btn-back, .btn-edit {
-  flex: 1;
-  padding: 0.7rem;
-  border: none;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  transition: all 0.2s;
-  font-family: inherit;
-}
-
-.btn-back {
-  background: var(--bg-dark);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-
-.btn-back:hover {
-  background: var(--bg-card-hover);
-}
-
-.btn-edit {
-  background: var(--primary);
-  color: var(--bg-dark);
-}
-
-.btn-edit:hover {
-  background: var(--primary-light);
-}
-
-.state {
-  text-align: center;
-  padding: 3rem;
-  color: var(--text-muted);
-}
-
-.spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--border);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 1rem;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }
 </style>
