@@ -33,13 +33,10 @@ public class TransaccionesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<TransaccionResponseDto>> Create([FromBody] TransaccionRequestDto dto)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
         try
         {
-             var transaccion = await _service.CreateAsync(dto);
-             return CreatedAtAction(nameof(GetById), new { id = transaccion.Id }, transaccion);
-
+            var transaccion = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = transaccion.Id }, transaccion);
         }
         catch (InvalidOperationException ex)
         {

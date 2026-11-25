@@ -60,7 +60,7 @@ public class TransaccionService : ITransaccionService
             CryptoCode = dto.CryptoCode,
             Action = dto.Action,
             CryptoAmount = dto.CryptoAmount,
-            Money = dto.CryptoAmount * precio,
+            Money = Math.Round(dto.CryptoAmount * precio, 2),
             DateTime = dto.DateTime
         };
 

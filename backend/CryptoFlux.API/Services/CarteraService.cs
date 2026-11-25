@@ -47,7 +47,7 @@ public class CarteraService : ICarteraService
                 throw new InvalidOperationException($"No se pudo obtener la cotizacion de {holding.Key}.");
 
             var precio = cotizacion.TotalBid;
-            var valor = holding.Value * precio;
+            var valor = Math.Round(holding.Value * precio, 2);
 
             criptomonedas.Add(new CarteraItemDto
             {
