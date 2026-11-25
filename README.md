@@ -16,13 +16,13 @@ Sistema de gestion de cartera de criptomonedas.
 
 ### Backend
 
-1. Abrir la solucion `CryptoFlux/CryptoFlux.API` en Visual Studio 2022
+1. Abrir la solucion `backend/CryptoFlux.sln` en Visual Studio 2022
 2. Ejecutar el proyecto con F5
 3. Swagger disponible en: `https://localhost:7212/swagger`
 
 ### Frontend
 
-1. Abrir la carpeta `crypto-flux` en VS Code
+1. Abrir la carpeta `frontend` en VS Code
 2. Ejecutar en la terminal:
 
 ```bash

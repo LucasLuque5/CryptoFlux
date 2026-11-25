@@ -8,6 +8,9 @@ namespace CryptoFlux.API.Services;
 
 public class TransaccionService : ITransaccionService
 {
+    private static readonly string[] CriptosValidas = { "btc", "eth", "usdc" };
+    private static readonly string[] AccionesValidas = { "purchase", "sale" };
+
     private readonly AppDbContext _context;
     private readonly ICryptoPriceService _priceService;
 
@@ -19,88 +22,58 @@ public class TransaccionService : ITransaccionService
 
     public async Task<IEnumerable<TransaccionResponseDto>> GetAllAsync()
     {
-        return await _context.Transacciones
+        var transacciones = await _context.Transacciones
             .OrderByDescending(t => t.DateTime)
-            .Select(t => new TransaccionResponseDto
-            {
-                Id = t.Id,
-                CryptoCode = t.CryptoCode,
-                Action = t.Action,
-                CryptoAmount = t.CryptoAmount,
-                Money = t.Money,
-                DateTime = t.DateTime
-            })
             .ToListAsync();
+
+        return transacciones.Select(ToDto);
     }
 
     public async Task<TransaccionResponseDto?> GetByIdAsync(int id)
     {
-        var t = await _context.Transacciones.FindAsync(id);
-        if (t == null) return null;
+        var transaccion = await _context.Transacciones.FindAsync(id);
+        if (transaccion == null) return null;
 
-        return new TransaccionResponseDto
-        {
-            Id = t.Id,
-            CryptoCode = t.CryptoCode,
-            Action = t.Action,
-            CryptoAmount = t.CryptoAmount,
-            Money = t.Money,
-            DateTime = t.DateTime
-        };
+        return ToDto(transaccion);
     }
 
     public async Task<TransaccionResponseDto> CreateAsync(TransaccionRequestDto dto)
     {
-        decimal moneyCalculado = dto.Money;
+        Validar(dto);
 
-        if (dto.Action.ToLower() == "compra")
-        {
-            var precio = await _priceService.GetPriceAsync(dto.CryptoCode, "ARS", dto.CryptoAmount);
-            if (precio == null)
-                throw new InvalidOperationException("No se pudo obtener la cotizacion de la criptomoneda.");
-
-            moneyCalculado = dto.CryptoAmount * precio.Value;
-        }
-
-        if (dto.Action.ToLower() == "venta")
+        if (dto.Action == "sale")
         {
             var saldo = await ObtenerSaldoAsync(dto.CryptoCode);
             if (dto.CryptoAmount > saldo)
                 throw new InvalidOperationException(
                     $"Saldo insuficiente. Tenes {saldo} {dto.CryptoCode.ToUpper()} y queres vender {dto.CryptoAmount}.");
-
-            var precio = await _priceService.GetPriceAsync(dto.CryptoCode, "ARS", dto.CryptoAmount);
-            if (precio == null)
-                throw new InvalidOperationException("No se pudo obtener la cotizacion de la criptomoneda.");
-
-            moneyCalculado = dto.CryptoAmount * precio.Value;
         }
+
+        var cotizacion = await _priceService.GetQuoteAsync(dto.CryptoCode);
+        if (cotizacion == null)
+            throw new InvalidOperationException("No se pudo obtener la cotizacion de la criptomoneda.");
+
+        var precio = dto.Action == "purchase" ? cotizacion.TotalAsk : cotizacion.TotalBid;
 
         var transaccion = new Transaccion
         {
             CryptoCode = dto.CryptoCode,
             Action = dto.Action,
             CryptoAmount = dto.CryptoAmount,
-            Money = moneyCalculado,
+            Money = Math.Round(dto.CryptoAmount * precio, 2),
             DateTime = dto.DateTime
         };
 
         _context.Transacciones.Add(transaccion);
         await _context.SaveChangesAsync();
 
-        return new TransaccionResponseDto
-        {
-            Id = transaccion.Id,
-            CryptoCode = transaccion.CryptoCode,
-            Action = transaccion.Action,
-            CryptoAmount = transaccion.CryptoAmount,
-            Money = transaccion.Money,
-            DateTime = transaccion.DateTime
-        };
+        return ToDto(transaccion);
     }
 
     public async Task<bool> UpdateAsync(int id, TransaccionRequestDto dto)
     {
+        Validar(dto);
+
         var transaccion = await _context.Transacciones.FindAsync(id);
         if (transaccion == null) return false;
 
@@ -124,21 +97,44 @@ public class TransaccionService : ITransaccionService
         return true;
     }
 
+    private static void Validar(TransaccionRequestDto dto)
+    {
+        if (!CriptosValidas.Contains(dto.CryptoCode))
+            throw new InvalidOperationException("La criptomoneda no es valida.");
+
+        if (!AccionesValidas.Contains(dto.Action))
+            throw new InvalidOperationException("La accion debe ser purchase o sale.");
+
+        if (dto.CryptoAmount <= 0)
+            throw new InvalidOperationException("La cantidad debe ser mayor a 0.");
+
+        if (dto.DateTime == default)
+            throw new InvalidOperationException("La fecha es obligatoria.");
+    }
+
     private async Task<decimal> ObtenerSaldoAsync(string cryptoCode)
     {
-        var transacciones = await _context.Transacciones
-            .Where(t => t.CryptoCode.ToLower() == cryptoCode.ToLower())
-            .ToListAsync();
+        var compras = await _context.Transacciones
+            .Where(t => t.CryptoCode == cryptoCode && t.Action == "purchase")
+            .SumAsync(t => t.CryptoAmount);
 
-        decimal saldo = 0;
-        foreach (var t in transacciones)
+        var ventas = await _context.Transacciones
+            .Where(t => t.CryptoCode == cryptoCode && t.Action == "sale")
+            .SumAsync(t => t.CryptoAmount);
+
+        return compras - ventas;
+    }
+
+    private static TransaccionResponseDto ToDto(Transaccion t)
+    {
+        return new TransaccionResponseDto
         {
-            if (t.Action.ToLower() == "compra")
-                saldo += t.CryptoAmount;
-            else if (t.Action.ToLower() == "venta")
-                saldo -= t.CryptoAmount;
-        }
-
-        return saldo;
+            Id = t.Id,
+            CryptoCode = t.CryptoCode,
+            Action = t.Action,
+            CryptoAmount = t.CryptoAmount,
+            Money = t.Money,
+            DateTime = t.DateTime
+        };
     }
 }

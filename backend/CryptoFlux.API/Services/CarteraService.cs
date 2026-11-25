@@ -28,9 +28,9 @@ public class CarteraService : ICarteraService
             if (!holdings.ContainsKey(code))
                 holdings[code] = 0;
 
-            if (t.Action.ToLower() == "compra")
+            if (t.Action.ToLower() == "purchase")
                 holdings[code] += t.CryptoAmount;
-            else if (t.Action.ToLower() == "venta")
+            else if (t.Action.ToLower() == "sale")
                 holdings[code] -= t.CryptoAmount;
         }
 
@@ -42,9 +42,12 @@ public class CarteraService : ICarteraService
             if (holding.Value <= 0)
                 continue;
 
-            var precioUnitario = await _priceService.GetPriceAsync(holding.Key, "ARS", 1);
-            var precio = precioUnitario ?? 0;
-            var valor = holding.Value * precio;
+            var cotizacion = await _priceService.GetQuoteAsync(holding.Key);
+            if (cotizacion == null)
+                throw new InvalidOperationException($"No se pudo obtener la cotizacion de {holding.Key}.");
+
+            var precio = cotizacion.TotalBid;
+            var valor = Math.Round(holding.Value * precio, 2);
 
             criptomonedas.Add(new CarteraItemDto
             {

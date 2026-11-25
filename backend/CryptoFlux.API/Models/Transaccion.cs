@@ -8,9 +8,9 @@ namespace CryptoFlux.API.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public string CryptoCode { get; set; }
+        public string CryptoCode { get; set; } = string.Empty;
         [Required]
-        public string Action { get; set; } 
+        public string Action { get; set; } = string.Empty;
 
         [Column(TypeName = "decimal(18, 8)")]
         public decimal CryptoAmount { get; set; }

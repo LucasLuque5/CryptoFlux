@@ -33,13 +33,10 @@ public class TransaccionesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<TransaccionResponseDto>> Create([FromBody] TransaccionRequestDto dto)
     {
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
         try
         {
-             var transaccion = await _service.CreateAsync(dto);
-             return CreatedAtAction(nameof(GetById), new { id = transaccion.Id }, transaccion);
-
+            var transaccion = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = transaccion.Id }, transaccion);
         }
         catch (InvalidOperationException ex)
         {
@@ -47,12 +44,19 @@ public class TransaccionesController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpPatch("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] TransaccionRequestDto dto)
     {
-        var resultado = await _service.UpdateAsync(id, dto);
-        if (!resultado) return NotFound();
-        return NoContent();
+        try
+        {
+            var resultado = await _service.UpdateAsync(id, dto);
+            if (!resultado) return NotFound();
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpDelete("{id}")]

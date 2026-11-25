@@ -2,10 +2,12 @@
 import { transaccionesApi } from '../Services/api.js'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { formatearFecha, formatearMoneda } from '../utils/formato.js'
 
 const transacciones = ref([])
 const cargando = ref(true)
 const error = ref(null)
+const errorBorrado = ref('')
 
 onMounted(async () => {
   try {
@@ -29,37 +31,27 @@ function editar(id) {
   router.push(`/transaccion/${id}/editar`)
 }
 
-async function borrar(id) {
-  if (confirm('Estas seguro que queres borrar esta transaccion?')) {
-    try {
-      await transaccionesApi.delete(id)
-      transacciones.value = transacciones.value.filter(t => t.id !== id)
-    } catch (e) {
-      alert('Error al borrar la transaccion.')
-      console.error(e)
-    }
+const idABorrar = ref(null)
+
+function borrar(id) {
+  errorBorrado.value = ''
+  idABorrar.value = id
+}
+
+function cancelarBorrado() {
+  idABorrar.value = null
+}
+
+async function confirmarBorrado() {
+  try {
+    await transaccionesApi.delete(idABorrar.value)
+    transacciones.value = transacciones.value.filter(t => t.id !== idABorrar.value)
+  } catch (e) {
+    errorBorrado.value = 'Error al borrar la transaccion.'
+    console.error(e)
+  } finally {
+    idABorrar.value = null
   }
-}
-
-function formatearFecha(fecha) {
-  return new Date(fecha).toLocaleString('es-AR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
-}
-
-function formatearMoneda(valor) {
-  return new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS'
-  }).format(valor)
-}
-
-function tipoBadge(action) {
-  return action === 'compra' ? 'compra' : 'venta'
 }
 </script>
 
@@ -69,6 +61,8 @@ function tipoBadge(action) {
       <h2>Historial de Transacciones</h2>
       <RouterLink to="/compra" class="btn-new">+ Nueva</RouterLink>
     </div>
+
+    <p v-if="errorBorrado" class="mensaje error">{{ errorBorrado }}</p>
 
     <div v-if="cargando" class="state">
       <div class="spinner"></div>
@@ -80,7 +74,6 @@ function tipoBadge(action) {
     </div>
 
     <div v-else-if="transacciones.length === 0" class="state empty">
-      <div class="empty-icon">&#128203;</div>
       <p>No hay transacciones registradas</p>
       <RouterLink to="/compra" class="btn-link">Registrar primera compra</RouterLink>
     </div>
@@ -100,7 +93,7 @@ function tipoBadge(action) {
         <tbody>
           <tr v-for="t in transacciones" :key="t.id">
             <td>
-              <span :class="['badge', tipoBadge(t.action)]">{{ t.action }}</span>
+              <span :class="['badge', t.action]">{{ t.action === 'purchase' ? 'Compra' : 'Venta' }}</span>
             </td>
             <td class="crypto-cell">
               <span class="crypto-code">{{ t.cryptoCode.toUpperCase() }}</span>
@@ -119,6 +112,17 @@ function tipoBadge(action) {
         </tbody>
       </table>
     </div>
+
+    <div v-if="idABorrar" class="modal-fondo">
+      <div class="modal">
+        <h3>Borrar transaccion</h3>
+        <p>Estas seguro que queres borrar la transaccion #{{ idABorrar }}?</p>
+        <div class="modal-acciones">
+          <button class="btn-action" @click="cancelarBorrado">Cancelar</button>
+          <button class="btn-action danger" @click="confirmarBorrado">Borrar</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -126,18 +130,6 @@ function tipoBadge(action) {
 .page {
   max-width: 900px;
   margin: 0 auto;
-}
-
-.page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-}
-
-.page-header h2 {
-  font-size: 1.4rem;
-  font-weight: 600;
 }
 
 .btn-new {
@@ -153,52 +145,6 @@ function tipoBadge(action) {
 
 .btn-new:hover {
   background: var(--primary-light);
-}
-
-.state {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  color: var(--text-muted);
-}
-
-.state.error {
-  color: var(--danger);
-  background: rgba(248, 81, 73, 0.05);
-  border-color: rgba(248, 81, 73, 0.2);
-}
-
-.empty-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.btn-link {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background: var(--primary);
-  color: var(--bg-dark);
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--border);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 1rem;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
 }
 
 .table-wrapper {
@@ -239,43 +185,16 @@ tr:hover td {
   background: var(--bg-card-hover);
 }
 
-.mono {
-  font-family: 'SF Mono', 'Fira Code', monospace;
-}
-
-.muted {
-  color: var(--text-muted);
-}
-
 .crypto-cell {
   font-weight: 600;
 }
 
 .crypto-code {
-  background: rgba(0, 200, 83, 0.1);
+  background: var(--primary-soft);
   color: var(--primary);
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
   font-size: 0.8rem;
-}
-
-.badge {
-  display: inline-block;
-  padding: 0.2rem 0.6rem;
-  border-radius: 100px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-.badge.compra {
-  background: rgba(0, 200, 83, 0.1);
-  color: var(--primary);
-}
-
-.badge.venta {
-  background: rgba(248, 81, 73, 0.1);
-  color: var(--danger);
 }
 
 .actions-col {
@@ -308,8 +227,41 @@ tr:hover td {
 }
 
 .btn-action.danger:hover {
-  background: rgba(248, 81, 73, 0.15);
+  background: var(--danger-soft);
   border-color: var(--danger);
   color: var(--danger);
+}
+
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 400px;
+  width: 90%;
+}
+
+.modal h3 {
+  margin-bottom: 0.5rem;
+}
+
+.modal p {
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+.modal-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 </style>

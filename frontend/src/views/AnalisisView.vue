@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { carteraApi } from '../Services/api.js'
+import { formatearMoneda } from '../utils/formato.js'
 
 const cartera = ref(null)
 const cargando = ref(true)
@@ -18,13 +19,6 @@ onMounted(async () => {
   }
 })
 
-function formatearMoneda(valor) {
-  return new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS'
-  }).format(valor)
-}
-
 function formatearCantidad(cantidad) {
   return new Intl.NumberFormat('es-AR', {
     minimumFractionDigits: 8,
@@ -36,14 +30,7 @@ function nombreCripto(codigo) {
   const nombres = {
     BTC: 'Bitcoin',
     ETH: 'Ethereum',
-    USDC: 'USD Coin',
-    USDT: 'Tether',
-    DAI: 'Dai',
-    BNB: 'BNB',
-    SOL: 'Solana',
-    XRP: 'Ripple',
-    ADA: 'Cardano',
-    DOGE: 'Dogecoin'
+    USDC: 'USD Coin'
   }
   return nombres[codigo.toUpperCase()] || codigo
 }
@@ -52,16 +39,9 @@ function colorCripto(codigo) {
   const colores = {
     BTC: '#f7931a',
     ETH: '#627eea',
-    USDC: '#2775ca',
-    USDT: '#26a17b',
-    DAI: '#f5ac37',
-    SOL: '#9945ff',
-    XRP: '#23292f',
-    ADA: '#0033ad',
-    DOGE: '#c2a633',
-    BNB: '#f3ba2f'
+    USDC: '#2775ca'
   }
-  return colores[codigo.toUpperCase()] || '#00c853'
+  return colores[codigo.toUpperCase()] || '#f7b32b'
 }
 </script>
 
@@ -81,14 +61,13 @@ function colorCripto(codigo) {
     </div>
 
     <div v-else-if="cartera && cartera.criptomonedas.length === 0" class="state empty">
-      <div class="empty-icon">&#128176;</div>
       <p>No tenes criptomonedas en tu cartera</p>
       <RouterLink to="/compra" class="btn-link">Registrar primera compra</RouterLink>
     </div>
 
     <div v-else>
       <div class="total-card">
-        <div class="total-label">Valor total de la cartera</div>
+        <div class="total-label">Billetera Virtual Valor Total</div>
         <div class="total-amount">{{ formatearMoneda(cartera.totalCartera) }}</div>
         <div class="total-count">{{ cartera.criptomonedas.length }} criptomonedas</div>
       </div>
@@ -124,65 +103,10 @@ function colorCripto(codigo) {
   margin: 0 auto;
 }
 
-.page-header {
-  margin-bottom: 1.5rem;
-}
-
-.page-header h2 {
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
-.state {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  color: var(--text-muted);
-}
-
-.state.error {
-  color: var(--danger);
-  background: rgba(248, 81, 73, 0.05);
-  border-color: rgba(248, 81, 73, 0.2);
-}
-
-.empty-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.btn-link {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background: var(--primary);
-  color: var(--bg-dark);
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid var(--border);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 1rem;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
 .total-card {
   text-align: center;
   padding: 2rem;
-  background: linear-gradient(135deg, #0d1117, #161b22);
+  background: linear-gradient(135deg, var(--bg-card), var(--primary-soft));
   border: 1px solid var(--primary);
   border-radius: 16px;
   margin-bottom: 1.5rem;
@@ -210,7 +134,7 @@ function colorCripto(codigo) {
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--primary);
-  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-family: var(--font-mono);
 }
 
 .total-count {
@@ -311,11 +235,4 @@ function colorCripto(codigo) {
   color: var(--primary);
 }
 
-.mono {
-  font-family: 'SF Mono', 'Fira Code', monospace;
-}
-
-.muted {
-  color: var(--text-muted);
-}
 </style>

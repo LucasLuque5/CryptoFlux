@@ -1,6 +1,8 @@
+using CryptoFlux.API.Services;
+
 namespace CryptoFlux.API.Interfaces;
 
 public interface ICryptoPriceService
 {
-    Task<decimal?> GetPriceAsync(string coin, string fiat, decimal volume);
+    Task<ExchangeQuote?> GetQuoteAsync(string cryptoCode);
 }
